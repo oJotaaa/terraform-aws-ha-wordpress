@@ -20,7 +20,7 @@ module "vpc" {
 # Security Group das EC2
 resource "aws_security_group" "ec2_sg" {
   name_prefix = "ec2-sg"
-  description = "Security group para associar nas instâncias EC2"
+  description = "Security group para associar nas instancias EC2"
   vpc_id      = module.vpc.vpc_id
 
   ingress {
@@ -62,7 +62,7 @@ resource "aws_security_group" "rds-efs_sg" {
     from_port       = 3306
     to_port         = 3306
     protocol        = "tcp"
-    description     = "Permite tráfego MySQL vindo da EC2"
+    description     = "Permite trafego MySQL vindo da EC2"
     security_groups = [aws_security_group.ec2_sg.id]
   }
 
@@ -70,7 +70,7 @@ resource "aws_security_group" "rds-efs_sg" {
     from_port   = 2049 
     to_port     = 2049
     protocol    = "tcp"
-    description = "Permite tráfego do EFS vindo da EC2"
+    description = "Permite trafego do EFS vindo da EC2"
     security_groups = [aws_security_group.ec2_sg.id]
   }
 
