@@ -129,7 +129,7 @@ resource "aws_db_subnet_group" "main" {
   }
 }
 
-# criação RDS
+# Criação RDS
 resource "aws_db_instance" "default" {
   engine                 = "mysql"
   engine_version         = "8.0"
@@ -171,7 +171,6 @@ resource "aws_launch_template" "wordpress_lt" {
   name_prefix   = "wordpress-lt-"
   image_id      = "ami-0360c520857e3138f"
   instance_type = "t2.micro"
-  key_name = "pass-gen-ec2"
 
   # Associa o Security Group EC2
   vpc_security_group_ids = [aws_security_group.ec2_sg.id]
@@ -272,6 +271,24 @@ resource "aws_autoscaling_group" "wordpress_asg" {
       key                 = tag.key
       value               = tag.value
       propagate_at_launch = true
+    }
+  }
+}
+
+# Política de Escalonamento para o Auto Scaling Group (baseada em CPU)
+resource "aws_autoscaling_policy" "cpu_scaling_policy" {
+  name                   = "wordpress-cpu-scaling-policy"
+  autoscaling_group_name = aws_autoscaling_group.wordpress_asg.name
+  policy_type            = "TargetTrackingScaling"
+
+  # Configuração do Target Tracking
+  target_tracking_configuration {
+    # Define o valor alvo que o ASG tentará manter
+    target_value = 50.0 # Alvo de 50% de uso de CPU
+
+    # Define a métrica pré-definida que será monitorada
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
     }
   }
 }
