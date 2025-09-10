@@ -97,3 +97,9 @@ Outputs:
 alb_dns_name = "wordpress-alb-1234567890.us-east-1.elb.amazonaws.com"
 ```
 Basta abrir esse endereço no navegador para acessar a página de instalação do WordPress.
+
+## Limpeza de Recursos
+Para evitar custos desnecessários, destrua a infraestrutura caso não estiver utilizando.
+```
+terraform destroy
+```
